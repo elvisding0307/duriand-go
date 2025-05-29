@@ -3,30 +3,63 @@ package controller
 import (
 	"duriand/internal/dao"
 	"duriand/internal/model"
+	"duriand/internal/serializer"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 )
 
-// 登录处理函数
 func Login(c *gin.Context) {
-	var input struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
+	const (
+		EMPTY_USERNAME_OR_PASSWORD int = iota + 1
+		INVALID_CREDENTIALS
+	)
+
+	errorMap := map[int]string{
+		EMPTY_USERNAME_OR_PASSWORD: "Username or password cannot be empty",
+		INVALID_CREDENTIALS:        "Invalid username or password",
 	}
 
-	// 绑定JSON输入
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	var req serializer.LoginRequestSerializer
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	// 查找用户
+	if req.Username == "" || req.Password == "" || req.CorePassword == "" {
+		c.JSON(http.StatusOK, serializer.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
+		return
+	}
+
 	var user model.User
-	if err := dao.DB_INSTANCE.Where("username = ?", input.Username).First(&user).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+	if err := dao.DB_INSTANCE.Where("username = ?", req.Username).First(&user).Error; err != nil {
+		c.JSON(http.StatusOK, serializer.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Login successful", "username": user.Username})
+	// 验证密码和核心密码
+	if user.Password != req.Password || user.CorePassword != req.CorePassword {
+		c.JSON(http.StatusOK, serializer.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
+		return
+	}
+
+	// 生成 JWT token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": user.Username,
+		"exp":      time.Now().Add(time.Hour * 24).Unix(), // token 有效期24小时
+	})
+
+	// 使用密钥签名 token
+	tokenString, err := token.SignedString([]byte("your-secret-key")) // 注意：实际使用时应该从配置文件读取密钥
+	if err != nil {
+		c.JSON(http.StatusOK, serializer.NewErrorResponse(INVALID_CREDENTIALS, "Failed to generate token"))
+		return
+	}
+
+	c.JSON(http.StatusOK, serializer.NewSuccessResponse(map[string]string{
+		"token": tokenString,
+	}))
 }
