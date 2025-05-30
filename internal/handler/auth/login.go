@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"duriand/internal/controller"
 	"duriand/internal/dao"
+	"duriand/internal/handler"
 	"duriand/internal/model"
 	"net/http"
 	"time"
@@ -36,18 +36,18 @@ func Login(c *gin.Context) {
 	}
 
 	if req.Username == "" || req.Password == "" || req.CorePassword == "" {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
 		return
 	}
 
 	var user model.User
 	if err := dao.DB_INSTANCE.Where("username = ?", req.Username).First(&user).Error; err != nil {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
 		return
 	}
 	// 验证密码和核心密码
 	if user.Password != req.Password || user.CorePassword != req.CorePassword {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
 		return
 	}
 
@@ -60,11 +60,11 @@ func Login(c *gin.Context) {
 	// 使用密钥签名 token
 	tokenString, err := token.SignedString([]byte("your-secret-key")) // 注意：实际使用时应该从配置文件读取密钥
 	if err != nil {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(INVALID_CREDENTIALS, "Failed to generate token"))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_CREDENTIALS, "Failed to generate token"))
 		return
 	}
 
-	c.JSON(http.StatusOK, controller.NewSuccessResponse(map[string]string{
+	c.JSON(http.StatusOK, handler.NewSuccessResponse(map[string]string{
 		"token": tokenString,
 	}))
 }

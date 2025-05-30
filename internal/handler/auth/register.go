@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"duriand/internal/controller"
 	"duriand/internal/dao"
+	"duriand/internal/handler"
 	"duriand/internal/model"
 	"net/http"
 
@@ -37,14 +37,14 @@ func Register(c *gin.Context) {
 	}
 
 	if req.Username == "" || req.Password == "" || req.CorePassword == "" {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
 		return
 	}
 
 	// 检查用户名是否已存在
 	var existingUser model.User
 	if err := dao.DB_INSTANCE.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
 		return
 	}
 	var user = model.User{Username: req.Username,
@@ -53,9 +53,9 @@ func Register(c *gin.Context) {
 
 	// 保存用户到数据库
 	if err := dao.DB_INSTANCE.Create(&user).Error; err != nil {
-		c.JSON(http.StatusOK, controller.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
+		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
 		return
 	}
 
-	c.JSON(http.StatusOK, controller.NewSuccessResponse(nil))
+	c.JSON(http.StatusOK, handler.NewSuccessResponse(nil))
 }

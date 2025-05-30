@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"duriand/internal/controller"
+	"duriand/internal/handler"
 	"fmt"
 	"net/http"
 
@@ -24,7 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 		// 从 Authorization header 获取 token
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.JSON(http.StatusOK, controller.NewErrorResponse(NO_TOKEN, errorMap[NO_TOKEN]))
+			c.JSON(http.StatusOK, handler.NewErrorResponse(NO_TOKEN, errorMap[NO_TOKEN]))
 			c.Abort()
 			return
 		}
@@ -40,7 +40,7 @@ func JWTAuth() gin.HandlerFunc {
 
 		if err != nil || !token.Valid {
 			fmt.Println("Invalid token:", err)
-			c.JSON(http.StatusOK, controller.NewErrorResponse(INVALID_TOKEN, errorMap[INVALID_TOKEN]))
+			c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_TOKEN, errorMap[INVALID_TOKEN]))
 			c.Abort()
 			return
 		}

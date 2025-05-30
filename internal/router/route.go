@@ -1,8 +1,8 @@
 package router
 
 import (
-	"duriand/internal/controller/api"
-	"duriand/internal/controller/auth"
+	"duriand/internal/handler/api"
+	"duriand/internal/handler/auth"
 	"duriand/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -25,6 +25,7 @@ func CreateRouter() *gin.Engine {
 		{
 			accountGroup.GET("/query", api.QueryAccount)
 			accountGroup.POST("/insert", api.InsertAccount)
+			accountGroup.POST("/update", api.UpdateAccount)
 		}
 		apiGroup.GET("/hello", api.HelloWorld)
 	}
