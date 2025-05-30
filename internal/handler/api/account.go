@@ -197,10 +197,10 @@ func QueryAccount(c *gin.Context) {
 }
 
 type UpdateAccountRequestSerializer struct {
-	Rid      string `json:"rid" binding:"required"`
-	Website  string `json:"website"`
-	Account  string `json:"account"`
-	Password string `json:"password"`
+	Rid      json.Number `json:"rid" binding:"required"`
+	Website  string      `json:"website"`
+	Account  string      `json:"account"`
+	Password string      `json:"password"`
 }
 
 func UpdateAccount(c *gin.Context) {
@@ -290,4 +290,64 @@ func UpdateAccount(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, handler.NewSuccessResponse("更新成功"))
+}
+
+func DeleteAccount(c *gin.Context) {
+	const (
+		INVALID_REQUEST int = iota + 1
+		FAILED_TO_DELETE_ACCOUNT
+	)
+
+	errorMap := map[int]string{
+		INVALID_REQUEST:          "Invalid request data",
+		FAILED_TO_DELETE_ACCOUNT: "Failed to delete account record",
+	}
+
+	type DeleteAccountRequestSerializer struct {
+		Rid json.Number `json:"rid" binding:"required"`
+	}
+
+	var req DeleteAccountRequestSerializer
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_REQUEST, errorMap[INVALID_REQUEST]))
+		return
+	}
+
+	uid := c.GetUint64("uid")
+	now := time.Now().Unix()
+
+	tx := dao.DB_INSTANCE.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 删除账户记录
+	if err := tx.Where("rid = ? AND uid = ?", req.Rid, uid).Delete(&model.Account{}).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_DELETE_ACCOUNT, errorMap[FAILED_TO_DELETE_ACCOUNT]))
+		return
+	}
+
+	// 更新timestamp
+	timestamp := model.Timestamp{
+		Uid:              uid,
+		LatestUpdateTime: now,
+		LatestDeleteTime: now,
+	}
+	if err := tx.Model(&model.Timestamp{}).Where("uid = ?", uid).
+		Updates(timestamp).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_DELETE_ACCOUNT, errorMap[FAILED_TO_DELETE_ACCOUNT]))
+		return
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_DELETE_ACCOUNT, errorMap[FAILED_TO_DELETE_ACCOUNT]))
+		return
+	}
+
+	c.JSON(http.StatusOK, handler.NewSuccessResponse("Account deleted successfully"))
 }

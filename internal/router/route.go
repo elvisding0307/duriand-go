@@ -25,7 +25,8 @@ func CreateRouter() *gin.Engine {
 		{
 			accountGroup.GET("/query", api.QueryAccount)
 			accountGroup.POST("/insert", api.InsertAccount)
-			accountGroup.POST("/update", api.UpdateAccount)
+			accountGroup.PUT("/update", api.UpdateAccount)
+			accountGroup.DELETE("/delete", api.DeleteAccount)
 		}
 		apiGroup.GET("/hello", api.HelloWorld)
 	}

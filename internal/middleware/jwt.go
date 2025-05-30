@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"duriand/internal/handler"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +38,6 @@ func JWTAuth() gin.HandlerFunc {
 		})
 
 		if err != nil || !token.Valid {
-			fmt.Println("Invalid token:", err)
 			c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_TOKEN, errorMap[INVALID_TOKEN]))
 			c.Abort()
 			return
