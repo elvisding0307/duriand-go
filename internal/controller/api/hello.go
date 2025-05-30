@@ -1,8 +1,9 @@
-package controller
+package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func HelloWorld(c *gin.Context) {

@@ -1,13 +1,19 @@
-package controller
+package auth
 
 import (
+	"duriand/internal/controller"
 	"duriand/internal/dao"
 	"duriand/internal/model"
-	"duriand/internal/serializer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+type RegisterRequestSerializer struct {
+	Username     string `json:"username"`
+	Password     string `json:"password"`
+	CorePassword string `json:"core_password"`
+}
 
 // 注册处理函数
 func Register(c *gin.Context) {
@@ -22,7 +28,7 @@ func Register(c *gin.Context) {
 		USER_EXISTS:                "Username already exists",
 		FAILED_TO_CREATE_USER:      "Failed to create user"}
 
-	var req serializer.RegisterRequestSerializer
+	var req RegisterRequestSerializer
 
 	// 绑定JSON到User结构体
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -31,14 +37,14 @@ func Register(c *gin.Context) {
 	}
 
 	if req.Username == "" || req.Password == "" || req.CorePassword == "" {
-		c.JSON(http.StatusOK, serializer.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
+		c.JSON(http.StatusOK, controller.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
 		return
 	}
 
 	// 检查用户名是否已存在
 	var existingUser model.User
 	if err := dao.DB_INSTANCE.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusOK, serializer.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
+		c.JSON(http.StatusOK, controller.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
 		return
 	}
 	var user = model.User{Username: req.Username,
@@ -47,9 +53,9 @@ func Register(c *gin.Context) {
 
 	// 保存用户到数据库
 	if err := dao.DB_INSTANCE.Create(&user).Error; err != nil {
-		c.JSON(http.StatusOK, serializer.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
+		c.JSON(http.StatusOK, controller.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
 		return
 	}
 
-	c.JSON(http.StatusOK, serializer.NewSuccessResponse(nil))
+	c.JSON(http.StatusOK, controller.NewSuccessResponse(nil))
 }

@@ -1,7 +1,8 @@
 package router
 
 import (
-	"duriand/internal/controller"
+	"duriand/internal/controller/api"
+	"duriand/internal/controller/auth"
 	"duriand/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -10,18 +11,22 @@ import (
 func CreateRouter() *gin.Engine {
 	r := gin.Default()
 	// 创建用户注册和登录的路由组
-	auth := r.Group("/auth")
+	authGroup := r.Group("/auth")
 	{
-		auth.POST("/register", controller.Register)
-		auth.POST("/login", controller.Login)
+		authGroup.POST("/register", auth.Register)
+		authGroup.POST("/login", auth.Login)
 	}
 
 	// 需要JWT验证的API路由组
-	api := r.Group("/api")
-	api.Use(middleware.JWTAuth())
+	apiGroup := r.Group("/api")
+	apiGroup.Use(middleware.JWTAuth())
 	{
-		api.POST("/insert_account", controller.InsertAccount)
-		api.GET("/hello", controller.HelloWorld)
+		accountGroup := apiGroup.Group("/account")
+		{
+			accountGroup.GET("/query", api.QueryAccount)
+			accountGroup.POST("/insert", api.InsertAccount)
+		}
+		apiGroup.GET("/hello", api.HelloWorld)
 	}
 
 	return r

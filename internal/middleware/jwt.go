@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"duriand/internal/serializer"
+	"duriand/internal/controller"
 	"fmt"
 	"net/http"
 
@@ -24,7 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 		// 从 Authorization header 获取 token
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.JSON(http.StatusOK, serializer.NewErrorResponse(NO_TOKEN, errorMap[NO_TOKEN]))
+			c.JSON(http.StatusOK, controller.NewErrorResponse(NO_TOKEN, errorMap[NO_TOKEN]))
 			c.Abort()
 			return
 		}
@@ -40,14 +40,15 @@ func JWTAuth() gin.HandlerFunc {
 
 		if err != nil || !token.Valid {
 			fmt.Println("Invalid token:", err)
-			c.JSON(http.StatusOK, serializer.NewErrorResponse(INVALID_TOKEN, errorMap[INVALID_TOKEN]))
+			c.JSON(http.StatusOK, controller.NewErrorResponse(INVALID_TOKEN, errorMap[INVALID_TOKEN]))
 			c.Abort()
 			return
 		}
 
 		// 将 token 中的信息存储到上下文中
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-			c.Set("username", claims["username"])
+			uid := uint64(claims["uid"].(float64))
+			c.Set("uid", uid)
 		}
 
 		c.Next()
