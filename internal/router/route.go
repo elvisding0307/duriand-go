@@ -20,6 +20,7 @@ func CreateRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(middleware.JWTAuth())
 	{
+		api.POST("/insert_account", controller.InsertAccount)
 		api.GET("/hello", controller.HelloWorld)
 	}
 

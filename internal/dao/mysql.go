@@ -36,5 +36,6 @@ func Connect(connectionString string) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	return db, db.AutoMigrate(&model.User{})
+	// 自动迁移所有模型
+	return db, db.AutoMigrate(&model.User{}, &model.Account{}, &model.Timestamp{})
 }
