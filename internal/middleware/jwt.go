@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"duriand/internal/handler"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,20 +9,10 @@ import (
 
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		const (
-			NO_TOKEN int = iota + 1
-			INVALID_TOKEN
-		)
-
-		errorMap := map[int]string{
-			NO_TOKEN:      "Token is required",
-			INVALID_TOKEN: "Invalid or expired token",
-		}
-
 		// 从 Authorization header 获取 token
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.JSON(http.StatusOK, handler.NewErrorResponse(NO_TOKEN, errorMap[NO_TOKEN]))
+			c.Status(http.StatusUnauthorized)
 			c.Abort()
 			return
 		}
@@ -38,7 +27,7 @@ func JWTAuth() gin.HandlerFunc {
 		})
 
 		if err != nil || !token.Valid {
-			c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_TOKEN, errorMap[INVALID_TOKEN]))
+			c.Status(http.StatusUnauthorized)
 			c.Abort()
 			return
 		}

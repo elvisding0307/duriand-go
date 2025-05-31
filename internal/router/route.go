@@ -13,8 +13,8 @@ func CreateRouter() *gin.Engine {
 	// 创建用户注册和登录的路由组
 	authGroup := r.Group("/auth")
 	{
-		authGroup.POST("/register", auth.Register)
-		authGroup.POST("/login", auth.Login)
+		authGroup.POST("/register", auth.RegisterHandler)
+		authGroup.POST("/login", auth.LoginHandler)
 	}
 
 	// 需要JWT验证的API路由组
@@ -23,12 +23,11 @@ func CreateRouter() *gin.Engine {
 	{
 		accountGroup := apiGroup.Group("/account")
 		{
-			accountGroup.GET("/query", api.QueryAccount)
-			accountGroup.POST("/insert", api.InsertAccount)
-			accountGroup.PUT("/update", api.UpdateAccount)
-			accountGroup.DELETE("/delete", api.DeleteAccount)
+			accountGroup.GET("/query", api.QueryAccountHandler)
+			accountGroup.POST("/insert", api.InsertAccountHandler)
+			accountGroup.PUT("/update", api.UpdateAccountHandler)
+			accountGroup.DELETE("/delete", api.DeleteAccountHandler)
 		}
-		apiGroup.GET("/hello", api.HelloWorld)
 	}
 
 	return r
