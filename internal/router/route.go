@@ -21,6 +21,7 @@ func CreateRouter() *gin.Engine {
 	// 需要JWT验证的API路由组
 	apiGroup := r.Group("/api")
 	apiGroup.Use(middleware.JWTAuth())
+	apiGroup.GET("/ping", api.PingHandler)
 	{
 		accountGroup := apiGroup.Group("/account")
 		{
