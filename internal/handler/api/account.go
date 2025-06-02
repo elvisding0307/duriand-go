@@ -5,6 +5,7 @@ import (
 	service_api "duriand/internal/service/api"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,13 +47,26 @@ func InsertAccountHandler(c *gin.Context) {
 
 func QueryAccountHandler(c *gin.Context) {
 	type QueryAccountRequestSerializer struct {
-		UpdateTime json.Number `json:"update_time" binding:"required"`
+		// 删除原来的UpdateTime字段
 	}
 
 	type QueryAccountResponseSerializer struct {
 		PullMode   service_api.PullMode         `json:"pull_mode"`
 		UpdateTime int64                        `json:"update_time"`
 		Accounts   []service_api.QueriedAccount `json:"accounts"`
+	}
+
+	// 从URL参数获取update_time
+	updateTimeStr := c.Query("update_time")
+	if updateTimeStr == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "update_time parameter is required"})
+		return
+	}
+
+	updateTime, err := strconv.ParseInt(updateTimeStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid update_time format"})
+		return
 	}
 
 	const (
@@ -67,15 +81,8 @@ func QueryAccountHandler(c *gin.Context) {
 		FAILED_TO_GET_ACCOUNTS:  "Failed to get accounts",
 	}
 
-	// Parse request
-	var req QueryAccountRequestSerializer
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_GET_TIMESTAMP, errorMap[FAILED_TO_GET_TIMESTAMP]))
-		return
-	}
 	// Get uid from JWT token
 	uid := c.GetUint64("uid")
-	updateTime, err := req.UpdateTime.Int64()
 	if err != nil || updateTime < 0 {
 		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_GET_TIMESTAMP, errorMap[FAILED_TO_GET_TIMESTAMP]))
 		return
