@@ -33,17 +33,18 @@ func LoginService(username, password, corePassword string) (string, error) {
 }
 
 func RegisterService(username, password, corePassword string) error {
-	var existingUser model.User
-	if err := dao.DB_INSTANCE.Where("username = ?", username).First(&existingUser).Error; err == nil {
-		return err
-	}
-
 	tx := dao.DB_INSTANCE.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
 		}
 	}()
+
+	var existingUser model.User
+	if err := tx.Where("username = ?", username).First(&existingUser).Error; err == nil {
+		tx.Rollback()
+		return errors.New("user already exists")
+	}
 
 	user := model.User{
 		Username:     username,
@@ -63,7 +64,7 @@ func RegisterService(username, password, corePassword string) error {
 		LatestUpdateTime: now,
 		LatestDeleteTime: now,
 	}
-	if err := tx.Model(&model.Timestamp{}).Create(&timestamp).Error; err != nil {
+	if err := tx.Create(&timestamp).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
