@@ -46,7 +46,6 @@ func RegisterHandler(c *gin.Context) {
 		} else {
 			c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
 			return
-
 		}
 	}
 
