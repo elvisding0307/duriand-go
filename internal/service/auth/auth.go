@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"duriand/internal/conf"
 	"duriand/internal/dao"
 	"duriand/internal/model"
 	"errors"
@@ -24,7 +25,7 @@ func LoginService(username, password, corePassword string) (string, error) {
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
 
-	tokenString, err := token.SignedString([]byte("your-secret-key"))
+	tokenString, err := token.SignedString([]byte(conf.DURIAND_CONFIG.DuriandSecretKey))
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"duriand/internal/conf"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, jwt.ErrSignatureInvalid
 			}
-			return []byte("your-secret-key"), nil // 注意：实际使用时应该从配置文件读取密钥
+			return []byte(conf.DURIAND_CONFIG.DuriandSecretKey), nil // 注意：实际使用时应该从配置文件读取密钥
 		})
 
 		if err != nil || !token.Valid {
