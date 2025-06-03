@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"duriand/internal/conf"
 	"duriand/internal/dao"
 	"duriand/internal/model"
 	"errors"
@@ -24,7 +25,7 @@ func LoginService(username, password, corePassword string) (string, error) {
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
 
-	tokenString, err := token.SignedString([]byte("your-secret-key"))
+	tokenString, err := token.SignedString([]byte(conf.DURIAND_CONFIG.DuriandSecretKey))
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
@@ -33,9 +34,17 @@ func LoginService(username, password, corePassword string) (string, error) {
 }
 
 func RegisterService(username, password, corePassword string) error {
+	tx := dao.DB_INSTANCE.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
 	var existingUser model.User
-	if err := dao.DB_INSTANCE.Where("username = ?", username).First(&existingUser).Error; err == nil {
-		return errors.New("username exists")
+	if err := tx.Where("username = ?", username).First(&existingUser).Error; err == nil {
+		tx.Rollback()
+		return errors.New("user already exists")
 	}
 
 	user := model.User{
@@ -44,9 +53,25 @@ func RegisterService(username, password, corePassword string) error {
 		CorePassword: corePassword,
 	}
 
-	if err := dao.DB_INSTANCE.Create(&user).Error; err != nil {
-		return errors.New("failed to create user")
+	if err := tx.Create(&user).Error; err != nil {
+		tx.Rollback()
+		return err
 	}
-
+	uid := user.Uid
+	now := time.Now().Unix()
+	// 更新timestamp
+	timestamp := model.Timestamp{
+		Uid:              uid,
+		LatestUpdateTime: now,
+		LatestDeleteTime: now,
+	}
+	if err := tx.Create(&timestamp).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 	return nil
 }

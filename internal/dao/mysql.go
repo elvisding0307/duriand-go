@@ -2,6 +2,7 @@ package dao
 
 import (
 	"duriand/internal/model"
+	"fmt"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -14,12 +15,19 @@ var DB_INSTANCE *gorm.DB
 // 参数:
 //
 //	mysql_connection_string (string): MySQL数据库的连接字符串，包含连接数据库所需的信息。
-func InitDB(mysql_connection_string string) error {
+func InitDB(host string, port string, user string, password string) error {
+	// 构建MySQL连接字符串
+	mysqlURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/duriand?charset=utf8mb4&parseTime=True&loc=Local",
+		user,
+		password,
+		host,
+		port)
+
 	// 已经初始化了db
 	if DB_INSTANCE != nil {
 		return nil
 	}
-	db, err := Connect(mysql_connection_string)
+	db, err := Connect(mysqlURL)
 	if err != nil {
 		return err
 	}

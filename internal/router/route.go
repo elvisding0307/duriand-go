@@ -10,6 +10,7 @@ import (
 
 func CreateRouter() *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.Cors())
 	// 创建用户注册和登录的路由组
 	authGroup := r.Group("/auth")
 	{
@@ -20,10 +21,11 @@ func CreateRouter() *gin.Engine {
 	// 需要JWT验证的API路由组
 	apiGroup := r.Group("/api")
 	apiGroup.Use(middleware.JWTAuth())
+	apiGroup.GET("/ping", api.PingHandler)
 	{
 		accountGroup := apiGroup.Group("/account")
 		{
-			accountGroup.GET("/query", api.QueryAccountHandler)
+			accountGroup.GET("/query", api.QueryAccountHandler) // 修改为 accountGroup.GET("/query", api.QueryAccountHandler)
 			accountGroup.POST("/insert", api.InsertAccountHandler)
 			accountGroup.PUT("/update", api.UpdateAccountHandler)
 			accountGroup.DELETE("/delete", api.DeleteAccountHandler)
