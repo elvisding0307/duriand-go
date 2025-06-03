@@ -40,11 +40,7 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	if err := service_auth.RegisterService(req.Username, req.Password, req.CorePassword); err != nil {
-		if err.Error() == "username exists" {
-			c.JSON(http.StatusOK, handler.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
-		} else {
-			c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
-		}
+		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_CREATE_USER, errorMap[FAILED_TO_CREATE_USER]))
 		return
 	}
 
