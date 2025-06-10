@@ -2,7 +2,7 @@ package auth
 
 import (
 	"duriand/internal/handler"
-	service_auth "duriand/internal/service/auth"
+	auth_service "duriand/internal/service/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +39,7 @@ func RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	if err := service_auth.RegisterService(req.Username, req.Password, req.CorePassword); err != nil {
+	if err := auth_service.RegisterService(req.Username, req.Password, req.CorePassword); err != nil {
 		if err.Error() == "user already exists" {
 			c.JSON(http.StatusOK, handler.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
 			return
@@ -81,7 +81,7 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	token, err := service_auth.LoginService(req.Username, req.Password, req.CorePassword)
+	token, err := auth_service.LoginService(req.Username, req.Password, req.CorePassword)
 	if err != nil {
 		c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
 		return

@@ -1,8 +1,8 @@
-package api
+package account
 
 import (
 	"duriand/internal/handler"
-	service_api "duriand/internal/service/api"
+	account_service "duriand/internal/service/account"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -37,7 +37,7 @@ func InsertAccountHandler(c *gin.Context) {
 
 	// Get uid from JWT token
 	uid := c.GetUint64("uid")
-	if err := service_api.InsertAccountService(uid, req.Website, req.Account, req.Password); err != nil {
+	if err := account_service.InsertAccountService(uid, req.Website, req.Account, req.Password); err != nil {
 		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_CREATE_ACCOUNT, errorMap[FAILED_TO_CREATE_ACCOUNT]+": "+err.Error()))
 		return
 	}
@@ -51,9 +51,9 @@ func QueryAccountHandler(c *gin.Context) {
 	}
 
 	type QueryAccountResponseSerializer struct {
-		PullMode   service_api.PullMode         `json:"pull_mode"`
-		UpdateTime int64                        `json:"update_time"`
-		Accounts   []service_api.QueriedAccount `json:"accounts"`
+		PullMode   account_service.PullMode         `json:"pull_mode"`
+		UpdateTime int64                            `json:"update_time"`
+		Accounts   []account_service.QueriedAccount `json:"accounts"`
 	}
 
 	// 从URL参数获取update_time
@@ -88,7 +88,7 @@ func QueryAccountHandler(c *gin.Context) {
 		return
 	}
 	// call servie api
-	pullMode, latestUpdateTime, queriedAccounts, err := service_api.QueryAccountService(uid, updateTime)
+	pullMode, latestUpdateTime, queriedAccounts, err := account_service.QueryAccountService(uid, updateTime)
 	if err != nil {
 		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_GET_ACCOUNTS, errorMap[FAILED_TO_GET_ACCOUNTS]+": "+err.Error()))
 		return
@@ -135,7 +135,7 @@ func UpdateAccountHandler(c *gin.Context) {
 		rid = uint64(ridi64)
 	}
 	// call service api
-	if err := service_api.UpdateAccountService(uid, rid, req.Website, req.Account, req.Password); err != nil {
+	if err := account_service.UpdateAccountService(uid, rid, req.Website, req.Account, req.Password); err != nil {
 		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_UPDATE_ACCOUNT, errorMap[FAILED_TO_UPDATE_ACCOUNT]+": "+err.Error()))
 		return
 	}
@@ -172,7 +172,7 @@ func DeleteAccountHandler(c *gin.Context) {
 	} else {
 		rid = uint64(ridi64)
 	}
-	if err := service_api.DeleteAccountService(uid, rid); err != nil {
+	if err := account_service.DeleteAccountService(uid, rid); err != nil {
 		c.JSON(http.StatusOK, handler.NewErrorResponse(FAILED_TO_DELETE_ACCOUNT, errorMap[FAILED_TO_DELETE_ACCOUNT]+": "+err.Error()))
 		return
 	}

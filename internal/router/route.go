@@ -1,8 +1,9 @@
 package router
 
 import (
-	"duriand/internal/handler/api"
-	"duriand/internal/handler/auth"
+	account_handler "duriand/internal/handler/account"
+	auth_handler "duriand/internal/handler/auth"
+	ping_handler "duriand/internal/handler/ping"
 	"duriand/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -11,24 +12,30 @@ import (
 func CreateRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(middleware.Cors())
-	// 创建用户注册和登录的路由组
-	authGroup := r.Group("/auth")
-	{
-		authGroup.POST("/register", auth.RegisterHandler)
-		authGroup.POST("/login", auth.LoginHandler)
-	}
-
 	// 需要JWT验证的API路由组
-	apiGroup := r.Group("/api")
-	apiGroup.Use(middleware.JWTAuth())
-	apiGroup.GET("/ping", api.PingHandler)
+	v1Group := r.Group("/v1")
 	{
-		accountGroup := apiGroup.Group("/account")
+		// 创建用户注册和登录的路由组
+		authGroup := v1Group.Group("/auth")
 		{
-			accountGroup.GET("/query", api.QueryAccountHandler) // 修改为 accountGroup.GET("/query", api.QueryAccountHandler)
-			accountGroup.POST("/insert", api.InsertAccountHandler)
-			accountGroup.PUT("/update", api.UpdateAccountHandler)
-			accountGroup.DELETE("/delete", api.DeleteAccountHandler)
+			authGroup.POST("/register", auth_handler.RegisterHandler)
+			authGroup.POST("/login", auth_handler.LoginHandler)
+		}
+
+		// ping路由组
+		pingGroup := v1Group.Group("/ping")
+		pingGroup.Use(middleware.JWTAuth())
+		{
+			pingGroup.GET("/", ping_handler.PingHandler)
+		}
+
+		accountGroup := v1Group.Group("/account")
+		accountGroup.Use(middleware.JWTAuth())
+		{
+			accountGroup.GET("/", account_handler.QueryAccountHandler) // 修改为 accountGroup.GET("/query", api.QueryAccountHandler)
+			accountGroup.POST("/", account_handler.InsertAccountHandler)
+			accountGroup.PUT("/", account_handler.UpdateAccountHandler)
+			accountGroup.DELETE("/", account_handler.DeleteAccountHandler)
 		}
 	}
 
