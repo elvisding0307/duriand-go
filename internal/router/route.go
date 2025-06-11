@@ -26,16 +26,16 @@ func CreateRouter() *gin.Engine {
 		pingGroup := v1Group.Group("/ping")
 		pingGroup.Use(middleware.JWTAuth())
 		{
-			pingGroup.GET("/", ping_handler.PingHandler)
+			pingGroup.GET("", ping_handler.PingHandler)
 		}
 
 		accountGroup := v1Group.Group("/account")
 		accountGroup.Use(middleware.JWTAuth())
 		{
-			accountGroup.GET("/", account_handler.QueryAccountHandler) // 修改为 accountGroup.GET("/query", api.QueryAccountHandler)
-			accountGroup.POST("/", account_handler.InsertAccountHandler)
-			accountGroup.PUT("/", account_handler.UpdateAccountHandler)
-			accountGroup.DELETE("/", account_handler.DeleteAccountHandler)
+			accountGroup.GET("", account_handler.QueryAccountHandler) // 修改为 accountGroup.GET("/query", api.QueryAccountHandler)
+			accountGroup.POST("", account_handler.InsertAccountHandler)
+			accountGroup.PUT("", account_handler.UpdateAccountHandler)
+			accountGroup.DELETE("", account_handler.DeleteAccountHandler)
 		}
 	}
 
