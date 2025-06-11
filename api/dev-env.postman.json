@@ -1,0 +1,30 @@
+{
+    "name": "dev-env",
+    "values": [
+        {
+            "key": "baseUrl",
+            "value": "http://dev-cn.your-api-server.com",
+            "type": "default",
+            "enabled": true
+        },
+        {
+            "key": "token",
+            "value": "",
+            "type": "default",
+            "enabled": true
+        },
+        {
+            "key": "host",
+            "value": "api.durian.xyz",
+            "type": "default",
+            "enabled": true
+        },
+        {
+            "key": "port",
+            "value": "7224",
+            "type": "default",
+            "enabled": true
+        }
+    ],
+    "_postman_variable_scope": "environment"
+}

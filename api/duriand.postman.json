@@ -1,0 +1,914 @@
+{
+    "info": {
+        "name": "duriand",
+        "description": "",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "v1",
+            "description": "",
+            "item": [
+                {
+                    "name": "注册",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [],
+                        "url": {
+                            "raw": "http://:host::port/v1/auth/register",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "auth",
+                                "register"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://:host::port/v1/auth/register",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "auth",
+                                        "register"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"sip\",\n    \"password\": \"123456\",\n    \"core_password\": \"123456\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:17:25 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "26"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\"code\":0,\"msg\":\"Success\"}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "登录",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [],
+                        "url": {
+                            "raw": "http://:host::port/v1/auth/login",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "auth",
+                                "login"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://:host::port/v1/auth/login",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"username\": \"sip\",\r\n    \"password\": \"123456\",\r\n    \"core_password\": \"123456\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:17:47 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "162"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\"code\":0,\"msg\":\"Success\",\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk3Mzc4NjcsInVpZCI6MX0.qvIx4TUg_tSnBobjpdTWHwhPTEWxIJeFMTcjijz5o70\"}}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "Ping",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {},
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "{{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://:host::port/v1/ping",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "ping"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "{{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://:host::port/v1/ping",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "ping"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "text",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "text/plain; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:18:37 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "4"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "pong"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "插入密码",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "{{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://:host::port/v1/account",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "account"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "{{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://:host::port/v1/account",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "account"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"website\": \"https://inconsequential-farm.org\",\n    \"account\": \"i8lv9r93@21cn.com\",\n    \"password\": \"iDsZXcuIOFoDtvP\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:20:05 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "26"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\"code\":0,\"msg\":\"Success\"}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "查询密码",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "GET",
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "{{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://:host::port/v1/account",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "account"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "update_time",
+                                    "value": "0",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "{{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://:host::port/v1/account",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "account"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "update_time",
+                                            "value": "0",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:20:30 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "883"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\"code\":0,\"msg\":\"Success\",\"data\":{\"pull_mode\":\"PULL_ALL\",\"update_time\":1749651613,\"accounts\":[{\"rid\":1,\"website\":\"https://jam-packed-bend.net/\",\"account\":\"n0emzg.jv62@qq.com\",\"password\":\"MPZClzlpcfCrO7H\"},{\"rid\":2,\"website\":\"https://frilly-tabletop.name/\",\"account\":\"lnf73@163.com\",\"password\":\"HcKakHNYtGmQvUH\"},{\"rid\":3,\"website\":\"https://little-e-mail.info\",\"account\":\"m8eiuk.fry@hotmail.com\",\"password\":\"Wb6o9S3HySvlQ_F\"},{\"rid\":4,\"website\":\"https://lonely-worth.name/\",\"account\":\"u6mgge47@yahoo.com.cn\",\"password\":\"9Ce0EwIgKIXZc81\"},{\"rid\":5,\"website\":\"https://ragged-community.org/\",\"account\":\"lj1ljf.pbz77@21cn.com\",\"password\":\"miyR9k9H_GIFn4b\"},{\"rid\":6,\"website\":\"https://inconsequential-farm.org\",\"account\":\"i8lv9r93@21cn.com\",\"password\":\"iDsZXcuIOFoDtvP\"},{\"rid\":7,\"website\":\"https://discrete-sand.info/\",\"account\":\"k18iui_flh2@outlook.com\",\"password\":\"WU4AeT3DAXXRY66\"}]}}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "更新密码",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "PUT",
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "{{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://:host::port/v1/account/",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "account"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "{{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://:host::port/v1/account/",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "account"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"rid\": 1,\r\n    \"website\": \"https://carefree-discourse.org/\",\r\n    \"account\": \"kutqrx.fnx@126.com\",\r\n    \"password\": \"ISWfEyKTSQ1P0wX\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:21:23 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "26"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\"code\":0,\"msg\":\"Success\"}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                },
+                {
+                    "name": "删除密码",
+                    "description": "",
+                    "event": [],
+                    "auth": {},
+                    "request": {
+                        "auth": {},
+                        "method": "DELETE",
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "{{token}}",
+                                "description": "",
+                                "type": "string"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://:host::port/v1/account/",
+                            "path": [
+                                "http:",
+                                ":host::port",
+                                "v1",
+                                "account"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "host",
+                                    "value": "{{host}}",
+                                    "description": "",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "port",
+                                    "value": "{{port}}",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "成功",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "{{token}}",
+                                        "description": "",
+                                        "disabled": false
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://:host::port/v1/account/",
+                                    "path": [
+                                        "http:",
+                                        ":host::port",
+                                        "v1",
+                                        "account"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "key": "host",
+                                            "value": "{{host}}",
+                                            "description": "",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "port",
+                                            "value": "{{port}}",
+                                            "description": "",
+                                            "disabled": false
+                                        }
+                                    ]
+                                },
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"rid\": 2\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 11 Jun 2025 14:22:10 GMT"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "26"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\"code\":0,\"msg\":\"Success\"}"
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "strictSSL": false,
+                        "followRedirects": true
+                    }
+                }
+            ],
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [],
+                        "type": "text/javascript",
+                        "packages": {}
+                    }
+                }
+            ],
+            "auth": {}
+        }
+    ],
+    "variable": [
+        {
+            "key": "host",
+            "value": "127.0.0.1",
+            "type": "string"
+        }
+    ],
+    "event": [],
+    "auth": {}
+}
