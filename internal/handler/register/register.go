@@ -1,8 +1,8 @@
-package auth
+package register
 
 import (
 	"duriand/internal/handler"
-	service_auth "duriand/internal/service/auth"
+	register_service "duriand/internal/service/register"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +39,7 @@ func RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	if err := service_auth.RegisterService(req.Username, req.Password, req.CorePassword); err != nil {
+	if err := register_service.RegisterService(req.Username, req.Password, req.CorePassword); err != nil {
 		if err.Error() == "user already exists" {
 			c.JSON(http.StatusOK, handler.NewErrorResponse(USER_EXISTS, errorMap[USER_EXISTS]))
 			return
@@ -50,44 +50,4 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, handler.NewSuccessResponse(nil))
-}
-
-func LoginHandler(c *gin.Context) {
-	type LoginRequestSerializer struct {
-		Username     string `json:"username"`
-		Password     string `json:"password"`
-		CorePassword string `json:"core_password"`
-	}
-
-	const (
-		EMPTY_USERNAME_OR_PASSWORD int = iota + 1
-		INVALID_CREDENTIALS
-	)
-
-	errorMap := map[int]string{
-		EMPTY_USERNAME_OR_PASSWORD: "Username or password cannot be empty",
-		INVALID_CREDENTIALS:        "Invalid username or password",
-	}
-
-	var req LoginRequestSerializer
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.Status(http.StatusBadRequest)
-		return
-	}
-
-	if req.Username == "" || req.Password == "" || req.CorePassword == "" {
-		c.JSON(http.StatusOK, handler.NewErrorResponse(EMPTY_USERNAME_OR_PASSWORD, errorMap[EMPTY_USERNAME_OR_PASSWORD]))
-		return
-	}
-
-	token, err := service_auth.LoginService(req.Username, req.Password, req.CorePassword)
-	if err != nil {
-		c.JSON(http.StatusOK, handler.NewErrorResponse(INVALID_CREDENTIALS, errorMap[INVALID_CREDENTIALS]))
-		return
-	}
-
-	c.JSON(http.StatusOK, handler.NewSuccessResponse(map[string]string{
-		"token": token,
-	}))
 }
